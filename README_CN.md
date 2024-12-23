@@ -9,7 +9,7 @@
 [![Featured｜HelloGitHub](https://img.shields.io/badge/Featured-HelloGitHub-green)](https://hellogithub.com)
 
 <div align="center">
-    <img src="src/assets/download.png" alt="Game Cheats Manager logo" width="250" />
+    <img src="https://github.com/Polonium-salts/Game-Cheats-Manager/blob/main/src/assets/logo.png?raw=true" alt="Game Cheats Manager logo" width="250" />
 </div>
 
 Game Cheats Manager 是一个高效的游戏修改器管理工具。它允许用户在一个便捷的位置浏览、下载和管理所有修改器。每个修改器（通常是独立的可执行文件）都可以直接通过应用程序启动或删除，通过保持所有内容井井有条和便于访问来简化您的游戏体验。
