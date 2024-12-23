@@ -1,47 +1,121 @@
 # Game Cheats Manager
 
-[English](./README.md) | 简体中文 | [繁體中文](./README_TW.md)
+[English](README.md) | [简体中文](README_CN.md) | [繁體中文](README_TW.md)
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/dyang886/Game-Cheats-Manager/total) ![GitHub Repo stars](https://img.shields.io/github/stars/dyang886/Game-Cheats-Manager?style=flat&color=ffc000) ![GitHub Release](https://img.shields.io/github/v/release/dyang886/Game-Cheats-Manager?link=https%3A%2F%2Fgithub.com%2Fdyang886%2FGame-Cheats-Manager%2Freleases%2Flatest) ![GitHub License](https://img.shields.io/github/license/dyang886/Game-Cheats-Manager) <a href="https://hellogithub.com/repository/3ca6e8e23401477282ba72d2d8932311" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=3ca6e8e23401477282ba72d2d8932311&claim_uid=UrZOap0AkvuRw7D&theme=small" alt="Featured｜HelloGitHub" /></a> <a href="https://discord.gg/d627qVyHEF" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Join_Discord-f0f0f0?logo=discord"></a> <a href="https://pd.qq.com/s/h06qbdey6" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Join_QQ-f0f0f0?logo=tencentqq"></a>
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Polonium-salts/Game-Cheats-Manager/total)
+![GitHub Repo stars](https://img.shields.io/github/stars/Polonium-salts/Game-Cheats-Manager)
+![GitHub Release](https://img.shields.io/github/v/release/Polonium-salts/Game-Cheats-Manager)
+![GitHub License](https://img.shields.io/github/license/Polonium-salts/Game-Cheats-Manager)
+[![Featured｜HelloGitHub](https://img.shields.io/badge/Featured-HelloGitHub-green)](https://hellogithub.com)
 
-<div align="center">
-    <img src="src/assets/logo.png" alt="Game Cheats Manager logo" width="250" />
-</div>
+![Game Cheats Manager logo](src/assets/logo.png)
 
-Game Cheats Manager 为玩家提供了一个高效管理游戏修改器的一站式解决方案。它允许用户在一个便捷的位置浏览、下载和管理所有修改器。每个修改器，通常是一个独立的可执行文件，都可以通过应用程序直接启动或删除，从而简化您的游戏体验。
+Game Cheats Manager 是一个高效的游戏修改器管理工具。它允许用户在一个便捷的位置浏览、下载和管理所有修改器。每个修改器（通常是独立的可执行文件）都可以直接通过应用程序启动或删除，通过保持所有内容井井有条和便于访问来简化您的游戏体验。
 
-## 使用
+## 功能特点
 
-1. **浏览修改器**: 在左侧使用搜索栏或浏览列表查找下载的修改器。
-2. **下载修改器**: 在右侧使用关键词搜索，并双击所需的匹配项以直接下载。修改器下载路径显示于右侧栏底部，您可以点击右侧的 `...` 来更改它。
-3. **管理修改器**: 使用应用程序中相应的按钮启动/双击或删除修改器。软件启动时还会自动更新已下载的修改器。
-4. **选项**: `选项` 菜单栏包含以下功能：
-   1. **设置**: 调整诸如主题和语言等设置。
-   2. **导入修改器**: 从文件选择窗口选择您想要导入的修改器。
-   3. **打开修改器下载路径**: 查看修改器下载到的文件夹。
-   4. **添加路径至白名单**: 将修改器下载路径添加到 Windows Defender 排除项中。
-   5. **关于**: 查看应用版本和项目相关链接。
+1. **浏览和搜索**
+   - 以现代卡片式界面浏览已安装的修改器
+   - 快速搜索已安装的修改器
+   - 直观的修改器管理，支持启动和删除操作
 
-## 安装
+2. **下载管理**
+   - 从多个来源搜索和下载修改器
+   - 自动更新修改器
+   - 下载进度跟踪
+   - 可自定义下载路径
 
-1. **下载安装程序**: 前往 [latest release](https://github.com/dyang886/Game-Cheats-Manager/releases) 并下载适用于 Windows 的安装程序 (64-bit)。
-2. **运行安装程序**: 运行安装程序，并按照说明来安装 Game Cheats Manager。
-3. **启动应用程序**: 从应用程序文件夹或开始菜单中打开 Game Cheats Manager。
+3. **插件系统**
+   - 可扩展的插件架构
+   - 内置防病毒插件，用于管理 Windows Defender 白名单
+   - 简单的插件开发接口
+
+4. **设置和自定义**
+   - 主题选择（深色/浅色）
+   - 多语言支持（English、简体中文、繁體中文）
+   - 自动更新选项
+   - 可自定义界面设置
+
+## 使用方法
+
+1. **主界面**
+   - **已安装**：查看和管理已安装的修改器
+   - **扩展**：管理插件和扩展
+   - **下载**：搜索和下载新的修改器
+   - **设置**：自定义应用程序设置
+   - **关于**：查看版本信息和更新
+
+2. **修改器管理**
+   - 以管理员权限启动修改器
+   - 删除不需要的修改器
+   - 搜索已安装的修改器
+   - 导入现有修改器
+
+3. **下载功能**
+   - 通过游戏名称搜索修改器
+   - 一键下载和安装
+   - 自动更新修改器
+   - 下载路径自定义
+
+4. **插件系统**
+   - 启用/禁用插件
+   - 配置插件设置
+   - 添加 Windows Defender 例外
+
+## 安装说明
+
+1. **下载安装程序**
+   - 访问[最新发布](https://github.com/Polonium-salts/Game-Cheats-Manager/releases/latest)
+   - 下载 Windows (64位) 安装程序
+
+2. **运行安装程序**
+   - 执行下载的文件
+   - 按照安装向导进行操作
+   - 选择安装目录
+
+3. **启动应用程序**
+   - 从桌面快捷方式或开始菜单启动
+   - 首次启动将配置基本设置
+
+## 开发说明
+
+### 环境要求
+- Python 3.8+
+- PyQt6
+- 其他依赖包见 `requirements.txt`
+
+### 设置开发环境
+```bash
+# 克隆仓库
+git clone https://github.com/Polonium-salts/Game-Cheats-Manager.git
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 运行应用程序
+python src/scripts/main.py
+```
+
+### 插件开发
+1. 创建新的插件类，继承自 `BasePlugin`
+2. 实现必需的方法和属性
+3. 在 `src/scripts/plugins/__init__.py` 中注册插件
 
 ## 免责声明
 
-Game Cheats Manager 是一个独立工具，与任何外部修改器提供商均无关联。下载的修改器受其各自的条款和条件约束。本软件仅提供了一种便捷的方式来管理这些修改器，并不托管任何内容本身。您可以在下面找到它们的官方网站：
+Game Cheats Manager 是一个独立的工具，与任何外部修改器提供商都没有关联。下载的修改器受其各自的条款和条件约束。本软件仅提供一种方便的方式来管理这些修改器，并不托管任何内容本身。
 
-- **FLiNG**: [https://flingtrainer.com](https://flingtrainer.com/)
-- **WeMod**: [https://www.wemod.com](https://www.wemod.com/)
+您可以在以下找到他们的官方网站：
+- **FLiNG**: https://flingtrainer.com
+- **WeMod**: https://www.wemod.com
 
 ## 支持
 
-如遇问题、功能请求或想参与项目开发，请访问 [GitHub repository](https://github.com/dyang886/Game-Cheats-Manager)。
+如需报告问题、请求新功能或贡献代码：
+- 创建[议题](https://github.com/Polonium-salts/Game-Cheats-Manager/issues)
+- 提交[拉取请求](https://github.com/Polonium-salts/Game-Cheats-Manager/pulls)
 
-以下是捐助方式:
+## 许可证
 
-|                             微信                             |                          支付宝                          |                          QQ                          |
-| :----------------------------------------------------------: | :------------------------------------------------------: | :--------------------------------------------------: |
-| <img src="src/assets/wechat.png" alt="WeChat Pay" width="200" /> | <img src="src/assets/alipay.png" alt="Alipay" width="200" /> | <img src="src/assets/qq.png" alt="QQ Pay" width="200" /> |
+本项目采用 [GPL-3.0 许可证](LICENSE.txt)
 
