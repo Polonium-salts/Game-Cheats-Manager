@@ -8,7 +8,9 @@
 ![GitHub License](https://img.shields.io/github/license/Polonium-salts/Game-Cheats-Manager)
 [![Featured｜HelloGitHub](https://img.shields.io/badge/Featured-HelloGitHub-green)](https://hellogithub.com)
 
-![Game Cheats Manager logo](src/assets/logo.png)
+<div align="center">
+    <img src="src/assets/download.png" alt="Game Cheats Manager logo" width="250" />
+</div>
 
 Game Cheats Manager is a one-stop solution for gamers to manage their trainers efficiently. It allows users to browse, download, and manage all their trainers from one convenient location. Each trainer, typically a standalone executable, can be launched or deleted directly through the app, simplifying your gaming experience by keeping everything organized and accessible.
 
