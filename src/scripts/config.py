@@ -36,16 +36,16 @@ def load_settings():
     locale.setlocale(locale.LC_ALL, '')
     system_locale = locale.getlocale()[0]
     locale_mapping = {
-        "English_United States": "en_US",
-        "Chinese (Simplified)_China": "zh_CN",
-        "Chinese (Simplified)_Hong Kong SAR": "zh_CN",
-        "Chinese (Simplified)_Macao SAR": "zh_CN",
-        "Chinese (Simplified)_Singapore": "zh_CN",
-        "Chinese (Traditional)_Hong Kong SAR": "zh_TW",
-        "Chinese (Traditional)_Macao SAR": "zh_TW",
-        "Chinese (Traditional)_Taiwan": "zh_TW"
+        "English_United States": "English",
+        "Chinese (Simplified)_China": "简体中文",
+        "Chinese (Simplified)_Hong Kong SAR": "简体中文",
+        "Chinese (Simplified)_Macao SAR": "简体中文",
+        "Chinese (Simplified)_Singapore": "简体中文",
+        "Chinese (Traditional)_Hong Kong SAR": "繁体中文",
+        "Chinese (Traditional)_Macao SAR": "繁体中文",
+        "Chinese (Traditional)_Taiwan": "繁体中文"
     }
-    app_locale = locale_mapping.get(system_locale, 'en_US')
+    app_locale = locale_mapping.get(system_locale, 'English')
 
     default_settings = {
         "downloadPath": os.path.join(os.environ["APPDATA"], "GCM Trainers"),
@@ -85,19 +85,33 @@ def load_settings():
 
 
 def get_translator():
-    if not hasattr(sys, 'frozen'):
-        for root, dirs, files in os.walk(resource_path("locale/")):
-            for file in files:
-                if file.endswith(".po"):
-                    po = polib.pofile(os.path.join(root, file))
-                    po.save_as_mofile(os.path.join(root, os.path.splitext(file)[0] + ".mo"))
-
+    """获取翻译器"""
     lang = settings["language"]
-    gettext.bindtextdomain("Game Cheats Manager", resource_path("locale/"))
-    gettext.textdomain("Game Cheats Manager")
-    lang = gettext.translation("Game Cheats Manager", resource_path("locale/"), languages=[lang])
-    lang.install()
-    return lang.gettext
+    if lang == "简体中文":
+        lang = "zh_CN"
+    elif lang == "繁体中文":
+        lang = "zh_TW"
+    else:
+        lang = "en_US"
+
+    try:
+        # 尝试加载翻译文件
+        lang_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "locale")
+        if not os.path.exists(lang_path):
+            # 如果翻译目录不存在，创建它
+            os.makedirs(lang_path)
+            return lambda x: x  # 返回一个简单的函数，直接返回输入的字符串
+            
+        lang = gettext.translation(
+            "Game Cheats Manager", 
+            lang_path,
+            languages=[lang],
+            fallback=True  # 如果找不到翻译文件，使用原始字符串
+        )
+        return lang.gettext
+    except Exception as e:
+        print(f"加载翻译文件时出错: {str(e)}")
+        return lambda x: x  # 出错时返回一个简单的函数，直接返回输入的字符串
 
 
 def is_chinese(text):
@@ -185,23 +199,23 @@ elevator_path = resource_path("dependency/Elevate.exe")
 search_path = resource_path("assets/search.png")
 
 language_options = {
-    "English (US)": "en_US",
-    "简体中文": "zh_CN",
-    "繁體中文": "zh_TW"
+    "English": "English",
+    "简体中文": "简体中文",
+    "繁体中文": "繁体中文"
 }
 
 theme_options = {
-    tr("Black"): "black",
-    tr("white"): "white"
+    tr("黑色"): "black",
+    tr("白色"): "white"
 }
 
 server_options = {
-    tr("International"): "intl",
-    tr("China") + tr(" (Some trainers cannot be downloaded)"): "china"
+    tr("国际"): "intl",
+    tr("中国") + tr(" (部分修改器无法下载)"): "china"
 }
 
 font_config = {
-    "en_US": resource_path("assets/NotoSans-Regular.ttf"),
-    "zh_CN": resource_path("assets/NotoSansSC-Regular.ttf"),
-    "zh_TW": resource_path("assets/NotoSansTC-Regular.ttf")
+    "English": resource_path("assets/NotoSans-Regular.ttf"),
+    "简体中文": resource_path("assets/NotoSansSC-Regular.ttf"),
+    "繁体中文": resource_path("assets/NotoSansTC-Regular.ttf")
 }

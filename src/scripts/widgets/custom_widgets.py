@@ -1,7 +1,11 @@
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QColor, QFont, QFontDatabase, QPainter
-from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QListWidget, QListWidgetItem, QPushButton, QWidget
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal
+from PyQt6.QtGui import QColor, QFont, QFontDatabase, QPainter, QPixmap
+from PyQt6.QtWidgets import (
+    QApplication, QHBoxLayout, QLabel, QListWidget, 
+    QListWidgetItem, QPushButton, QWidget, QVBoxLayout
+)
 from zhon.cedict import simp, trad
+import os
 
 from config import *
 
@@ -83,33 +87,44 @@ class StatusMessageWidget(QWidget):
 
 
 class MultilingualListWidget(QListWidget):
-    def __init__(self):
-        super().__init__()
-        self.english_font = QFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(font_config['en_US']))[0], 10)
-        self.chinese_simplified_font = QFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(font_config['zh_CN']))[0], 10)
-        self.chinese_traditional_font = QFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(font_config['zh_TW']))[0], 10)
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setStyleSheet("""
+            QListWidget {
+                border: 1px solid #3d3d3d;
+                border-radius: 4px;
+                background-color: #2d2d2d;
+                color: white;
+            }
+            QListWidget::item {
+                padding: 8px;
+                border-bottom: 1px solid #3d3d3d;
+            }
+            QListWidget::item:selected {
+                background-color: #0078d4;
+            }
+            QListWidget::item:hover {
+                background-color: #3d3d3d;
+            }
+        """)
 
-    def addItem(self, item):
-        if isinstance(item, str):
-            item = QListWidgetItem(item)
+        # 加载不同语言的字体
+        self.english_font = QFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(font_config['English']))[0], 10)
+        self.chinese_font = QFont(QFontDatabase.applicationFontFamilies(QFontDatabase.addApplicationFont(font_config['简体中文']))[0], 10)
 
-        text = item.text()
-        if self.is_chinese_simplified(text):
-            item.setFont(self.chinese_simplified_font)
-        elif self.is_chinese_traditional(text):
-            item.setFont(self.chinese_traditional_font)
+    def addItem(self, text):
+        if isinstance(text, QListWidgetItem):
+            item = text
+            text = item.text()
+        else:
+            item = QListWidgetItem(text)
+            
+        if any(ord(c) > 127 for c in text):  # 检查是否包含非ASCII字符
+            item.setFont(self.chinese_font)
         else:
             item.setFont(self.english_font)
-
+            
         super().addItem(item)
-
-    @staticmethod
-    def is_chinese_simplified(text):
-        return any(char in simp for char in text)
-
-    @staticmethod
-    def is_chinese_traditional(text):
-        return any(char in trad for char in text)
 
 
 class AlertWidget(QWidget):
@@ -179,3 +194,303 @@ class AlertWidget(QWidget):
         painter.setBrush(QColor(self.colors[self.alert_type]))
         painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRoundedRect(self.rect(), 5, 5)
+
+
+class TrainerCard(QWidget):
+    launch_clicked = pyqtSignal(str)  # 发送trainer_name
+    delete_clicked = pyqtSignal(str)  # 发送trainer_name
+
+    def __init__(self, name, description="", icon_path=None, parent=None):
+        super().__init__(parent)
+        self.name = name
+        self.description = description
+        self.icon_path = icon_path
+        self.setupUI()
+
+    def setupUI(self):
+        self.setFixedSize(200, 280)
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2d2d2d;
+                color: white;
+                border-radius: 8px;
+            }
+            QWidget:hover {
+                background-color: #3d3d3d;
+            }
+        """)
+
+        layout = QVBoxLayout(self)
+        layout.setSpacing(10)
+        layout.setContentsMargins(12, 12, 12, 12)
+
+        # 图标
+        iconLabel = QLabel()
+        if self.icon_path and os.path.exists(self.icon_path):
+            pixmap = QPixmap(self.icon_path)
+        else:
+            pixmap = QPixmap(resource_path("assets/logo.png"))
+        scaledPixmap = pixmap.scaled(160, 160, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        iconLabel.setPixmap(scaledPixmap)
+        iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(iconLabel)
+
+        # 名称
+        nameLabel = QLabel(self.name)
+        nameLabel.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        nameLabel.setWordWrap(True)
+        nameLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(nameLabel)
+
+        # 描述
+        if self.description:
+            descLabel = QLabel(self.description)
+            descLabel.setStyleSheet("""
+                QLabel {
+                    font-size: 12px;
+                    color: #cccccc;
+                }
+            """)
+            descLabel.setWordWrap(True)
+            descLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            layout.addWidget(descLabel)
+
+        # 按钮区域
+        buttonLayout = QHBoxLayout()
+        buttonLayout.setSpacing(8)
+
+        launchBtn = CustomButton(tr("启动"))
+        launchBtn.setStyleSheet("""
+            QPushButton {
+                padding: 6px 12px;
+                background-color: #0078d4;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-size: 12px;
+            }
+            QPushButton:hover {
+                background-color: #1a86d9;
+            }
+            QPushButton:pressed {
+                background-color: #006cbd;
+            }
+            QPushButton:disabled {
+                background-color: #333333;
+                color: #666666;
+            }
+        """)
+        launchBtn.clicked.connect(lambda: self.launch_clicked.emit(self.name))
+        buttonLayout.addWidget(launchBtn)
+
+        deleteBtn = CustomButton(tr("删除"))
+        deleteBtn.setStyleSheet("""
+            QPushButton {
+                padding: 6px 12px;
+                background-color: #333333;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-size: 12px;
+            }
+            QPushButton:hover {
+                background-color: #404040;
+            }
+            QPushButton:pressed {
+                background-color: #292929;
+            }
+            QPushButton:disabled {
+                background-color: #333333;
+                color: #666666;
+            }
+        """)
+        deleteBtn.clicked.connect(lambda: self.delete_clicked.emit(self.name))
+        buttonLayout.addWidget(deleteBtn)
+
+        layout.addLayout(buttonLayout)
+        layout.addStretch()
+
+
+class DownloadTrainerCard(TrainerCard):
+    download_clicked = pyqtSignal(str)  # 发送trainer_name
+
+    def __init__(self, name, description="", icon_path=None, parent=None):
+        super().__init__(name, description, icon_path, parent)
+
+    def setupUI(self):
+        self.setFixedSize(200, 280)
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2d2d2d;
+                color: white;
+                border-radius: 8px;
+            }
+            QWidget:hover {
+                background-color: #3d3d3d;
+            }
+        """)
+
+        layout = QVBoxLayout(self)
+        layout.setSpacing(10)
+        layout.setContentsMargins(12, 12, 12, 12)
+
+        # 图标
+        iconLabel = QLabel()
+        if self.icon_path and os.path.exists(self.icon_path):
+            pixmap = QPixmap(self.icon_path)
+        else:
+            pixmap = QPixmap(resource_path("assets/logo.png"))
+        scaledPixmap = pixmap.scaled(160, 160, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        iconLabel.setPixmap(scaledPixmap)
+        iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(iconLabel)
+
+        # 名称
+        nameLabel = QLabel(self.name)
+        nameLabel.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        nameLabel.setWordWrap(True)
+        nameLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(nameLabel)
+
+        # 描述
+        if self.description:
+            descLabel = QLabel(self.description)
+            descLabel.setStyleSheet("""
+                QLabel {
+                    font-size: 12px;
+                    color: #cccccc;
+                }
+            """)
+            descLabel.setWordWrap(True)
+            descLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            layout.addWidget(descLabel)
+
+        # 下载按钮
+        downloadBtn = CustomButton(tr("下载"))
+        downloadBtn.setStyleSheet("""
+            QPushButton {
+                padding: 8px;
+                background-color: #0078d4;
+                border: none;
+                border-radius: 4px;
+                color: white;
+                font-size: 12px;
+                width: 100%;
+            }
+            QPushButton:hover {
+                background-color: #1a86d9;
+            }
+            QPushButton:pressed {
+                background-color: #006cbd;
+            }
+            QPushButton:disabled {
+                background-color: #333333;
+                color: #666666;
+            }
+        """)
+        downloadBtn.clicked.connect(lambda: self.download_clicked.emit(self.name))
+        layout.addWidget(downloadBtn)
+        layout.addStretch()
+
+
+class PluginCard(QWidget):
+    """插件卡片组件"""
+    
+    def __init__(self, name, description="", version="", author="", parent=None):
+        super().__init__(parent)
+        self.name = name
+        self.description = description
+        self.version = version
+        self.author = author
+        self.setupUI()
+
+    def setupUI(self):
+        self.setFixedSize(200, 280)
+        self.setStyleSheet("""
+            QWidget {
+                background-color: #2d2d2d;
+                color: white;
+                border-radius: 8px;
+            }
+            QWidget:hover {
+                background-color: #3d3d3d;
+            }
+        """)
+
+        layout = QVBoxLayout(self)
+        layout.setSpacing(10)
+        layout.setContentsMargins(12, 12, 12, 12)
+
+        # 图标
+        iconLabel = QLabel()
+        try:
+            pixmap = QPixmap(resource_path("assets/plugin.png"))
+        except:
+            # 如果找不到插件图标，使用默认图标
+            pixmap = QPixmap(resource_path("assets/logo.png"))
+        scaledPixmap = pixmap.scaled(160, 160, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        iconLabel.setPixmap(scaledPixmap)
+        iconLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(iconLabel)
+
+        # 名称
+        nameLabel = QLabel(self.name)
+        nameLabel.setStyleSheet("""
+            QLabel {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        """)
+        nameLabel.setWordWrap(True)
+        nameLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(nameLabel)
+
+        # 描述
+        if self.description:
+            descLabel = QLabel(self.description)
+            descLabel.setStyleSheet("""
+                QLabel {
+                    font-size: 12px;
+                    color: #cccccc;
+                }
+            """)
+            descLabel.setWordWrap(True)
+            descLabel.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            layout.addWidget(descLabel)
+
+        # 版本和作者信息
+        infoLayout = QHBoxLayout()
+        infoLayout.setSpacing(10)
+
+        if self.version:
+            versionLabel = QLabel(f"v{self.version}")
+            versionLabel.setStyleSheet("""
+                QLabel {
+                    font-size: 12px;
+                    color: #0078d4;
+                }
+            """)
+            infoLayout.addWidget(versionLabel)
+
+        if self.author:
+            authorLabel = QLabel(self.author)
+            authorLabel.setStyleSheet("""
+                QLabel {
+                    font-size: 12px;
+                    color: #888888;
+                }
+            """)
+            infoLayout.addWidget(authorLabel)
+
+        layout.addLayout(infoLayout)
+        layout.addStretch()
